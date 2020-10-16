@@ -1,0 +1,158 @@
+description = 'Kotlin Standard Library for JVM'
+
+apply plugin: 'kotlin-platform-jvm'
+apply plugin: 'pill-configurable'
+
+archivesBaseName = 'kotlin-stdlib'
+
+configureJvm6Project(project)
+configurePublishing(project)
+
+configurations {
+    distSources
+}
+
+pill {
+    importAsLibrary = true
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir "${rootDir}/core/builtins/src"
+            srcDir 'runtime'
+            srcDir 'src'
+        }
+    }
+    test {
+        kotlin {
+            srcDir 'test'
+        }
+    }
+    longRunningTest {
+        kotlin {
+            srcDir 'testLongRunning'
+        }
+    }
+    java9 {
+        java {
+            srcDir 'java9'
+        }
+    }
+}
+
+configurations {
+    commonSources
+    longRunningTestCompile.extendsFrom(testCompile)
+    builtins
+    compileOnly.extendsFrom(builtins)
+}
+
+dependencies {
+    expectedBy project(":kotlin-stdlib-common")
+
+    commonSources project(path: ":kotlin-stdlib-common", configuration: "sources")
+
+    compile group: 'org.jetbrains', name: 'annotations', version:'13.0'
+
+    testCompile project(':kotlin-test:kotlin-test-junit')
+    testCompile project(':kotlin-coroutines-experimental-compat')
+
+    builtins project(':core:builtins')
+}
+
+jar {
+    dependsOn(configurations.builtins)
+    manifestAttributes(manifest, project, 'Main' /*true*/)
+    from {
+        zipTree(configurations.builtins.singleFile)
+    }
+    // TODO: enable as soon as this doesn't cause D8/DX to crash
+    // from sourceSets.java9.output
+}
+
+sourcesJar {
+    from "${rootDir}/core/builtins/native"
+}
+
+task distSourcesJar(type: Jar) {
+    dependsOn(sourcesJar, configurations.commonSources)
+    destinationDirectory = file("$buildDir/lib/dist")
+    classifier = 'sources'
+    duplicatesStrategy = DuplicatesStrategy.FAIL
+
+    from zipTree(sourcesJar.outputs.files.singleFile)
+
+    from(zipTree(configurations.commonSources.singleFile)) {
+        it.includeEmptyDirs = false
+        exclude 'META-INF/*'
+        into 'common'
+    }
+}
+
+task modularJar(type: Jar) {
+    dependsOn(jar)
+    manifestAttributes(manifest, project, 'Main', true)
+    classifier = 'modular'
+
+    from zipTree(jar.outputs.files.singleFile).matching {
+        // Beware of Gradle problem: changing exclude spec doesn't affect Jar task up-to-dateness
+        exclude('kotlin/native/**')
+    }
+    from sourceSets.java9.output
+}
+
+artifacts {
+    archives sourcesJar
+    sources sourcesJar
+    distSources distSourcesJar
+    archives modularJar
+}
+
+javadocJar()
+
+task dexMethodCount(type: DexMethodCount) {
+    from jar
+    ownPackages = ['kotlin']
+}
+check.dependsOn(dexMethodCount)
+
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = [
+                "-version",
+                "-Xallow-kotlin-package",
+                "-Xallow-result-return-type",
+                "-Xmultifile-parts-inherit",
+                "-Xnormalize-constructor-calls=enable",
+                "-module-name", "kotlin-stdlib",
+                "-Xuse-experimental=kotlin.Experimental",
+                "-Xuse-experimental=kotlin.ExperimentalMultiplatform",
+                "-Xuse-experimental=kotlin.contracts.ExperimentalContracts",
+                "-Xinline-classes"
+        ]
+    }
+}
+
+
+compileJava9Sources(project, 'kotlin.stdlib', [sourceSets.main.output])
+
+compileTestKotlin {
+    kotlinOptions {
+        freeCompilerArgs += [
+                "-Xuse-experimental=kotlin.Experimental",
+                "-Xuse-experimental=kotlin.ExperimentalUnsignedTypes",
+                "-Xuse-experimental=kotlin.ExperimentalStdlibApi"
+        ]
+    }
+}
+
+task longRunningTest(type: Test, dependsOn: longRunningTestClasses) {
+    group = "verification"
+    testClassesDirs = sourceSets.longRunningTest.output.classesDirs
+    classpath = sourceSets.longRunningTest.runtimeClasspath
+}
+
+if (project.hasProperty("kotlin.stdlib.test.long.running")) {
+    check.dependsOn(longRunningTest)
+}

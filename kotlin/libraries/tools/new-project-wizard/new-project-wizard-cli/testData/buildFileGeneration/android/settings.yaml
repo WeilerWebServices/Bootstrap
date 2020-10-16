@@ -1,0 +1,11 @@
+kotlin:
+  projectKind: Multiplatform
+  modules:
+    - type:
+        name: android
+        androidSdkPath: /home/user/Android/Sdk
+      kind: singleplatformJvm
+      name: android
+      sourcesets:
+        - type: main
+        - type: test

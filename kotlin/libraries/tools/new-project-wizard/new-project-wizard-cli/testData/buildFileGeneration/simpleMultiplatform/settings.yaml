@@ -1,0 +1,23 @@
+kotlin:
+  projectKind: Multiplatform
+  modules:
+    - type: multiplatform
+      kind: multiplatform
+      name: a
+      subModules:
+        - type:
+            name: jvmTarget
+            testFramework: JUNIT4
+          kind: target
+          name: jvm
+          sourcesets:
+            - type: main
+            - type: test
+        - type:
+              name: jsBrowser
+              testFramework: JS
+          kind: target
+          name: a
+          sourcesets:
+            - type: main
+            - type: test

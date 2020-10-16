@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>My book list</title>
+		<link href="../bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet">
+		<link href="../bootstrap-3.3.5/css/bootstrap-theme.min.css" rel="stylesheet">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<!--script src="../bootstrap-3.3.5/js/bootstrap.min.js"></script-->
+		<script src="notesapp.js"></script>
+</head>
+	<body>
+		<div class="container-fluid">
+   			<div class="page-header">
+   				<h1>Books I've read and would like to read!</h1>
+   			</div>
+   			<div class="row">
+		        <div class="col-md-6">
+		          <table id="bookList" class="table">
+		            <thead>
+		              <tr>
+		                <th>#</th>
+		                <th>Author</th>
+		                <th>Book Title</th>
+		                <th>Read this one!</th>
+		                <th>Review</th>
+		                <th>Save</th>
+		                <th>Delete</th>
+		              </tr>
+		            </thead>
+		          </table>
+		          <h2>Add a book</h2>
+		          <table id="bookSave" class="table table-striped">
+		            <tbody>
+		            <thead>
+		              <tr>
+		                <th>Author</th>
+		                <th>Book Title</th>
+		                <th>Read this one!</th>
+		                <th>Review</th>
+		                <th>Save</th>
+		                <th>Delete</th>
+		              </tr>
+		            </thead>
+		              <tr>
+		                <td><input type="text" class="author form-control" /></td>
+		                <td><input type="text" class="title form-control" /></td>
+		                <td>
+		                	<div class="checkbox">
+						    	<label>
+						      		<input type="checkbox">
+						    	</label>
+						  	</div>
+						</td>
+		                <td><input type="text" class="review form-control" /></td>
+		                <td><button type="button" class="btn btn-success add">Save</button></td>
+		                <td><button type="button" class="btn btn-danger delete">Delete</button></td>
+		              </tr>
+		            </tbody>
+		          </table>
+		        </div>
+		      </div>
+   		</div>
+  	</body>
+</html>

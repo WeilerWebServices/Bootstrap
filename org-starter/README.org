@@ -1,0 +1,313 @@
+* org-starter
+[[https://github.com/akirak/org-starter/workflows/org-starter_CI/badge.svg]]
+[[https://melpa.org/#/org-starter][https://melpa.org/packages/org-starter-badge.svg]]
+
+Org-starter is a framework for basic configuration of Emacs Org Mode. It
+allows you to configure Org Mode easily even with many files and
+directories.
+
+The standard way to configure Org Mode is set a bunch of variables such
+as =org-agenda-files= and =org-refile-targets=. This makes it hard to
+add/delete files to/from the configuration. Org-starter lets you
+configure Org Mode in a file-centric and incremental manner, which
+scales well especially if you have many Org files and sometimes have to
+tweak the file list.
+
+In other words, org-starter allows you to configure Org Mode in a manner
+similar to use-package. The following is an example file configuration
+with org-starter:
+
+#+BEGIN_SRC emacs-lisp
+    (org-starter-define-file "subjects.org"
+      :agenda t
+      :refile '(:maxlevel . 9))
+#+END_SRC
+** Table of contents
+:PROPERTIES:
+:TOC:      siblings
+:END:
+    -  [[#prerequisites][Prerequisites]]
+    -  [[#installation][Installation]]
+    -  [[#configuration][Configuration]]
+      -  [[#load-path-for-org-files][Load path for org files]]
+      -  [[#external-configuration-files][External configuration files]]
+        -  [[#org-starter-swiper-config-files][org-starter-swiper-config-files]]
+      -  [[#extras][Extras]]
+      -  [[#loading-local-variables-in-org-files-without-confirmation][Loading local variables in Org files without confirmation]]
+    -  [[#usage][Usage]]
+      -  [[#configure-directories][Configure directories]]
+      -  [[#configure-files][Configure files]]
+        -  [[#quickly-access-a-particular-file-with-a-shortcut-key][Quickly access a particular file with a shortcut key]]
+      -  [[#org-starter-def-macro][org-starter-def macro]]
+      -  [[#configure-capture-templates][Configure capture templates]]
+      -  [[#extras][Extras]]
+        -  [[#locate-a-file][Locate a file]]
+        -  [[#load-all-known-files][Load all known files]]
+        -  [[#jump-to-a-file][Jump to a file]]
+        -  [[#jump-to-a-file-alternative-mode][Jump to a file (alternative mode)]]
+        -  [[#refile-an-entry-to-a-file][Refile an entry to a file]]
+      -  [[#helm-interface-to-visit-an-org-file][Helm interface to visit an Org file]]
+      -  [[#counsel-interface][Counsel interface]]
+    -  [[#related-packages][Related packages]]
+    -  [[#license][License]]
+
+** Prerequisites
+- Emacs 25.1
+- =dash= and =dash-functional=
+- =swiper= if you use =org-starter-swiper=.
+
+** Installation
+Install =org-starter= package from MELPA.
+
+If you use =org-starter-swiper=, install =org-starter-swiper= as well.
+
+Note: =counsel-org-starter= and =helm-org-starter= in this repository are not
+available on MELPA yet. Install them individually after installing
+=org-starter= if you need them.
+** Configuration
+*** Load path for org files
+You can set up a "load path" for Org files. This path is later used to
+find an Org file with a specific file name. To set the load path,
+customize =org-starter-path=.
+
+You can also add directories to the load path by calling
+=org-starter-define-directory= with =:add-to-path= option.
+*** External configuration files
+An obvious way to configure Org files using org-starter is to put the configuration in your Emacs initialization file, i.e. =~/.emacs.d/init.el=.  Org-starter also allows you to put it in an external configuration file residing in the same directory as your Org files. This is useful if have some host-local configuration and don't want to put it in your =init.el=. Org-starter is about Org files, so it makes sense to configure the package in alongside the files.
+
+To use this feature, set =org-starter-load-config-files= custom variable to t.
+Now you can put your configuration in =~/org/.org-config.el= if =~/org/= is included in =org-starter-path=:
+
+#+begin_src emacs-lisp
+  ;; ~/.emacs.d/init.el: Configure org-starter
+  (use-package org-starter
+    :custom
+    ;; Enable external configuration files loaded from org-starter-path
+    (org-starter-load-config-files t))
+
+  ;; Your custom-file: Set org-starter-path
+  (custom-set-variables
+   ...
+   '(org-starter-path (quote ("~/org/")))
+   ...
+   )
+
+  ;; Now you can put your configuration in ~/org/.org-config.el
+  (org-starter-def "cpb.org")
+#+end_src
+
+You can put the configuration in any directories in =org-starter-path=. It is possible for you to put the configuration in a different directory
+**** org-starter-swiper-config-files
+=org-starter-swiper-config-files= command available from =org-starter-swiper=, which is a separate package, lets you run [[https://github.com/abo-abo/swiper][swiper]] through your configuration files. It is handy for finding a particular location in your configuration. It may be a good idea to bind a key to the command:
+*** Extras
+#+begin_src emacs-lisp
+(add-to-list 'org-starter-extra-alternative-find-file-map
+             '(";" org-starter-swiper-config-files "config")
+             t)
+#+end_src
+
+=org-starter-extra-alternative-find-file-map= is a list of commands available when you run =org-starter-alternative-find-file-by-key= command:
+
+#+begin_src emacs-lisp
+(define-key (kbd "C-c j") #'org-starter-alternative-find-file-by-key)
+#+end_src
+
+The following =org-capture= template lets you add a configuration quickly to one of your org-starter configuration files. =org-starter-find-config-file= lets you select an existing configuration file, and the entire target function navigates to the end of the selected file:
+
+#+begin_src emacs-lisp
+(org-starter-def-capture "e" "Personal Emacs configuration"
+  plain (function (lambda ()
+                    (org-starter-find-config-file)
+                    (goto-char (point-max))))
+  "%i"
+  :unnarrowed t)
+#+end_src
+*** Loading local variables in Org files without confirmation
+You may have added local variables to your Org files. 
+It is annoying to answer "yes" every time Emacs asks you if you are sure you want to load the variables. This can be skipped by enabling =org-starter-mode= and setting =org-starter-enable-local-variables= to =:all=. That is, =enable-local-variables= is temporarily overridden while a file registered by org-starter is loaded.
+
+Since variables defined in your own files are trusted, this is generally considered safe. However, when you set this option to =:all=, please don't add a file that can be edited by someone else to =org-starter-known-files=, as local variables defined by others can bring a security risk.
+** Usage
+*** Configure directories
+Use =org-starter-define-directory= function to define a directory that
+contains Org files. You can add the directory to agenda files and/or
+refile targets via its options.
+
+You can also add it to the load path via =:add-to-path= option.
+
+For details of options, run =C-h f org-starter-define-directory=.
+
+*** Configure files
+Use =org-starter-define-file= function to define an Org file. As with
+directory definitions, you can add the file to agenda files and/or
+refile targets.
+
+You can also define Org files inside =org-starter-define-directory= form
+as =:files= option.
+
+For details, run =C-h f org-starter-define-file=.
+
+**** Quickly access a particular file with a shortcut key
+=org-starter-define-file= accepts optional =:key= property, whose value should be a key passed to =kbd= function. This property is used by =org-starter-find-file-by-key=, =org-starter-alternative-find-file-by-key=, and =org-starter-refile-by-key= commands, which enter a transient state to operate on a particular file quickly.
+
+[[file:screenshots/org-starter-refile-by-key.png]]
+
+You can also add custom commands to the transient keymaps by setting =org-starter-extra-find-file-map=, =org-starter-extra-alternative-find-file-map=, and =org-starter-extra-refile-map=, respectively.
+
+#+begin_src emacs-lisp
+  (setq org-starter-extra-refile-map
+        '(("/" org-refile "normal refile")))
+#+end_src
+
+For example, you can add a function that refiles entries into a date tree using my [[https://github.com/akirak/org-reverse-datetree][org-reverse-datetree]] package as in [[https://github.com/akirak/org-reverse-datetree#defining-a-refile-function][this example]].
+*** =org-starter-def= macro
+You can also use =org-starter-def= define either a file or a directory.
+Depending on the type of the argument, it calls either
+=org-starter-define-file= or =org-starter-define-directory=. It supports
+the same functionality as the two functions, but it allows you to define
+files and directories slightly more concisely.
+
+It basically supports the same as options as
+=org-starter-define-file=/=org-starter-define-directory=, but it doesn't
+need quoting. For example, the following two directives are equivalent:
+
+#+BEGIN_SRC emacs-lisp
+    (org-starter-define-file "~/hello.org"
+    :refile '(:maxlevel . 3))
+
+    (org-starter-def "~/hello.org"
+    :refile (:maxlevel . 3))
+#+END_SRC
+
+When you define a directory using =org-starter-def=, you can pass
+multiple arguments as =:files= option:
+
+#+BEGIN_SRC emacs-lisp
+    (org-starter-def "~/my-directory"
+      :files
+      ("file1.org" :agenda t)
+      ("file2.org" :agenda nil :required nil))
+#+END_SRC
+
+It also supports an additional option =:config=. Its argument is
+evaluated after the other options are applied, as in =use-package=. This
+is executed if and only if the file/directory exists. It can take
+multiple arguments:
+
+#+BEGIN_SRC emacs-lisp
+    (org-starter-def "~/my-directory"
+      :config
+      (do-something)
+      (do-another-thing))
+#+END_SRC
+*** Configure capture templates
+Org-starter provides two ways to incrementally define org-capture templates:
+
+- =:capture= property in =org-starter-define-file=, which lets you omit the file name of each template target. =(file FILENAME)= becomes =file= here.
+- =org-starter-def-capture= macro, which lets you omit the directory of a file name in template target. The file is searched from the load path. If there is no file existing in the load path, the template is not added.
+
+Templates added by org-starter are sorted alphabetically, so they are grouped by prefix letters even if they are defined in distributed locations.
+
+Each template entry added by these functions is transformed by a function specified as the value of =org-starter-capture-template-map-function= custom variable. This can be used to apply rules to your capture templates.
+
+There is also =org-starter-initial-capture-templates= custom variable, which is a recommended way to define template groups.
+*** Extras
+**** Locate a file
+You can use =org-starter-locate-file= function to find an Org file
+contained in one of the directories in =org-starter-path=:
+
+#+BEGIN_EXAMPLE
+    (org-starter-locate-file "tasks.org")
+#+END_EXAMPLE
+
+To locate a file which is not in the path but already registered
+(defined) as a known file, use the function with an extra third
+argument. This function first tries to find a file in the list of known
+files:
+
+#+BEGIN_SRC emacs-lisp
+    (org-starter-locate-file "file-not-in-path.org" nil t)
+#+END_SRC
+
+**** Load all known files
+It is sometimes convenient to load a specific set of Org files into
+Emacs as buffers. For example, you can search headings in the live Org
+buffers using =counsel-org-goto-all=.
+
+- To load all files registered by =org-starter-define-file= into Emacs,
+  use =org-starter-load-all-known-files= command.
+- To load all files in =org-starter-path= into Emacs, use
+  =org-starter-load-all-files-in-path= command.
+**** Jump to a file
+:PROPERTIES:
+:CREATED_TIME: [2019-06-22 Sat 09:29]
+:END:
+If you set =:key= of a file in =org-starter-define-file=, you can jump to the file quickly with =org-starter-find-file-by-key= command.
+
+You can also define extra bindings for the commands by adding entries to =org-starter-extra-find-file-map=:
+
+#+begin_src emacs-lisp
+;; Add a binding to jump to your Emacs init file
+(setq org-starter-extra-find-map
+      '(("e" (lambda () (interactive) (find-file "~/.emacs.d/init.el")) "init.el")))
+#+end_src
+**** Jump to a file (alternative mode)
+This package also provides =org-starter-alternative-find-file-by-key=, which provides an alternative mode for jumping to a file. Like =org-starter-define-file=, it displays options based on =:key= property of your files, but it uses a different function, which is configured as
+=org-starter-alternative-find-function=, for visiting a selected file. For example, you can use [[https://github.com/alphapapa/helm-org-rifle][helm-org-rifle-files]] for performing a search in the selected file:
+
+#+begin_src emacs-lisp
+(setq org-starter-alternative-find-function 'helm-org-rifle-files)
+#+end_src
+**** Refile an entry to a file
+When you are visiting a file in Org mode, you can use =org-starter-refile-by-key= to refile the current entry to a particular file. The refile level as set in =:refile= option is used for producing candidates.
+
+Like the previous commands, you can add extra bindings to the command through =org-starter-extra-refile-map=. If you use [[https://github.com/akirak/org-reverse-datetree][org-reverse-datetree]], it is a good idea to define a custom refile function for your datetree file and add it to the map. =org-starter-extras.el= in this repository provides a shortcut for defining such a function concisely:
+
+#+begin_src emacs-lisp
+;; Define org-starter-refile-cpb-datetree function
+(org-starter-extras-def-reverse-datetree-refile "cpb.org"
+  '("CREATED_TIME" "CLOSED"))
+
+(add-to-list 'org-starter-extra-refile-map
+             '("p" org-starter-refile-cpb-datetree "cpb"))
+#+end_src
+*** COMMENT org-starter-utils library                                   :no_export:
+:PROPERTIES:
+:TOC:      ignore
+:END:
+# I have removed this file, so I will hide this subsection.
+
+=org-starter-utils.el= is a collection of utilities related to Org mode.
+It is part of =org-starter= package on MELPA and shipped with it, but it does not depend on =org-starter.el=,
+so you can use it without loading =org-starter.el=.
+Utilities in the library are designed to be useful with/without org-starter.
+**** Avy and Org
+The library provides some [[https://github.com/abo-abo/avy][avy]] interfaces to the features of Org mode.
+You need to install avy to use these functions.
+
+- =org-starter-utils-avy-id= is a function which returns =ID= property of an entry selected with avy.
+  If the property is not set on the entry, it generates a new one.
+- Similarly, =org-starter-utils-avy-custom-id= is a function which returns =CUSTOM_ID= property of an entry selected with avy.
+  If the property is not set on the entry, it generates a new one.
+- =org-starter-utils-avy-store-link-to-heading= stores a link to an entry selected with avy.
+*** Helm interface to visit an Org file
+A separate package =helm-org-starter.el= provides a Helm command named
+=helm-org-starter= which you can use to select an Org file in various
+categories or create a new one in a known directory.
+
+*** Counsel interface
+=counsel-org-starter.el= provides the following commands:
+
+- =counsel-org-starter-known-file=, which lets you choose a known file.
+- =counsel-org-starter=, which lets you choose a known file or a file in
+  =org-agenda-files=.
+** Related packages
+You may find the following packages useful if you use org-starter:
+
+- [[https://github.com/akirak/ivy-omni-org][ivy-omni-org]]
+- [[https://github.com/akirak/org-reverse-datetree][org-reverse-datetree]]
+** License
+GPL v3
+# Local Variables:
+# before-save-hook: org-make-toc
+# End:

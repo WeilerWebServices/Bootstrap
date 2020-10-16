@@ -1,0 +1,15 @@
+title: $:/plugins/reidgould/dpbd/images/Dropboard
+
+<svg class="tc-image-options-button tc-image-button" width="22pt" height="22pt" viewBox="0 0 22 22">
+<g>
+  <rect x="15.5" y="3" width="3.5" height="2"/>
+  <rect x="9" y="3" width="4" height="2"/>
+  <rect x="9" y="6" width="4" height="2"/>
+  <rect x="9" y="9" width="4" height="2"/>
+  <rect x="9" y="12" width="4" height="2"/>
+  <rect x="3" y="3" width="3.5" height="2"/>
+  <rect x="3" y="6" width="3.5" height="2"/>
+  <path d="M19,0H3C1.4,0,0,1.4,0,3v16c0,1.6,1.4,3,3,3h16c1.6,0,3-1.4,3-3V3C22,1.4,20.7,0,19,0z M14.5,20V2H19c0.5,0,1,0.5,1,1v16
+    c0,0.5-0.5,1-1,1H14.5z M8,20V2h6v18L8,20z M2,19V3c0-0.5,0.5-1,1-1h4.5v18H3C2.5,20,2,19.5,2,19z"/>
+</g>
+</svg>

@@ -1,0 +1,56 @@
+{
+  "name": "tiddlywiki-dropboard",
+  "version": "1.0.2",
+  "description": "A TiddlyWiki plugin for kanban like organization in the style of Trello using boards, lists, and cards.",
+  "keywords": [
+    "tiddlywiki",
+    "tiddlywiki5",
+    "wiki",
+    "kanban",
+    "trello",
+    "personal",
+    "knowledgebase",
+    "organization",
+    "nonlinear",
+    "board",
+    "list",
+    "card",
+    "whiteboard",
+    "sticky note"
+  ],
+  "author": {
+    "name": "Reid Gould",
+    "email": "reidgould@gmail.com",
+    "url": "reidgould.com"
+  },
+  "contributors": [
+    {
+      "name": "Reid Gould",
+      "email": "reidgould@gmail.com",
+      "url": "reidgould.com"
+    }
+  ],
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/reidgould/tiddlywiki-dropboard"
+  },
+  "license": "SEE LICENSE IN license.txt",
+  "engines": {
+    "node": ">= 6.11.0",
+    "npm": ">= 3.0.0"
+  },
+  "main": "",
+  "scripts": {
+    "tw-build-dpbd": "tiddlywiki ./editions/dropboard-plugin --output ../Build/Plugin --build dpbd-plugin --output ../Build/EmptyWithDropboard --build empty-with-dpbd --output . --build meta",
+    "tw-build-dpbd-plugin":     "tiddlywiki ./editions/dropboard-plugin     --output ../Build/Plugin       --build dpbd-plugin",
+    "tw-build-empty-with-dpbd": "tiddlywiki ./editions/dropboard-plugin     --output ../Build/EmptyWithDropboard --build empty-with-dpbd",
+    "tw-build-meta":           "tiddlywiki ./editions/dropboard-plugin     --output ../                   --build meta",
+    "tw-build-dpbd-user-guide": "tiddlywiki ./editions/dropboard-user-guide --output ../Build/UserGuide    --build dpbd-user-guide"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "tiddlywiki": "^5.1.14"
+  },
+  "bundledDependencies": []
+}

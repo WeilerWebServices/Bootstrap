@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>My book list</title>
+		<link href="../bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet">
+		<link href="../bootstrap-3.3.5/css/bootstrap-theme.min.css" rel="stylesheet">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="../bootstrap-3.3.5/js/bootstrap.min.js"></script>
+		<script src="notesapp.js"></script>
+</head>
+	<body>
+		<div class="container-fluid">
+   			<div class="page-header">
+   				<h1>Books I've read and would like to read!</h1>
+   			</div>
+   			<div class="row">
+		        <div class="col-md-6">
+		          <table class="table table-striped">
+		            <thead>
+		              <tr>
+		                <th>#</th>
+		                <th>Author</th>
+		                <th>Book Title</th>
+		                <th>Read this one!</th>
+		                <th>Review</th>
+		                <th>Save</th>
+		                <th>Delete</th>
+		              </tr>
+		            </thead>
+		            <tbody>
+		              <tr id="book1">
+		                <td>1</td>
+		                <td class="author">Scarlett Thompson</td>
+		                <td class="title">The End of Mr. Y</td>
+		                <td>Yes</td>
+		                <td><input type="text" class="review" /></td>
+		                <td><button type="button" class="btn btn-success save">Save</button></td>
+		                <td><button type="button" class="btn btn-danger delete">Delete</button></td>
+		              </tr>
+		              <tr id="book2">
+		                <td>2</td>
+		                <td class="author">Iain M. Banks</td>
+		                <td class="title">Against a Dark Background</td>
+		                <td>Yes</td>
+		                <td><input type="text" class="review" /></td>
+		                <td><button type="button" class="btn btn-success save">Save</button></td>
+		                <td><button type="button" class="btn btn-danger delete">Delete</button></td>
+		              </tr>
+		              <tr id="book3">
+		                <td>3</td>
+		                <td class="author">Felicity Hayes McCoy</td>
+		                <td class="title">The House on an Irish Hillside</td>
+		                <td>No</td>
+		                <td><input type="text" class="review" /></td>
+		                <td><button type="button" class="btn btn-success">Save</button></td>
+		                <td><button type="button" class="btn btn-danger delete">Delete</button></td>
+		              </tr>
+		            </tbody>
+		          </table>
+		        </div>
+		      </div>
+   		</div>
+  	</body>
+</html>

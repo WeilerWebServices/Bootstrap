@@ -1,0 +1,53 @@
+title: $:/plugins/gsd5/core/ui/sidebar/collect-sidebar
+tags: $:/tags/SideBar
+caption: Collect
+
+<$transclude tiddler="$:/plugins/gsd5/core/ui/lists/realm-list"/>
+
+<$set name="gsd_type" value="action">
+<$set name="gsd_status" value="next">
+<$set name="gsd_complete" value="false">
+<$set name="gsd_realm" value={{$:/currentRealm}}>
+<$gsdtiddler skeleton="$:/plugins/gsd5/core/ui/skeletons/ActionSkeleton" edit={{$:/plugins/gsd5/core/ui/config/new-tiddler-show}}>{{$:/plugins/gsd5/core/images/task}} New Action</$gsdtiddler>
+</$set>
+</$set>
+</$set>
+</$set>
+
+<$set name="gsd_type" value="project">
+<$set name="gsd_status" value="active">
+<$set name="gsd_complete" value="false">
+<$set name="gsd_realm" value={{$:/currentRealm}}>
+<$gsdtiddler skeleton="$:/plugins/gsd5/core/ui/skeletons/ActionSkeleton" edit={{$:/plugins/gsd5/core/ui/config/new-tiddler-show}}>{{$:/plugins/gsd5/core/images/project}} New Project</$gsdtiddler>
+</$set>
+</$set>
+</$set>
+</$set>
+
+<$set name="gsd_type" value="contact">
+<$set name="gsd_realm" value={{$:/currentRealm}}>
+<$gsdtiddler skeleton="$:/plugins/gsd5/core/ui/skeletons/ContactSkeleton">{{$:/plugins/gsd5/core/images/contact}} New Contact</$gsdtiddler>
+</$set>
+</$set>
+
+<$set name="gsd_type" value="reference">
+<$set name="gsd_realm" value={{$:/currentRealm}}>
+<$gsdtiddler skeleton="$:/plugins/gsd5/core/ui/skeletons/ReferenceSkeleton">{{$:/plugins/gsd5/core/images/reference}} New Reference</$gsdtiddler>
+</$set>
+</$set>
+
+<$set name="gsd_type" value="context">
+<$set name="gsd_realm" value={{$:/currentRealm}}>
+<$gsdtiddler skeleton="$:/plugins/gsd5/core/ui/skeletons/ContextSkeleton" edit="no">{{$:/plugins/gsd5/core/images/context}} New Context</$gsdtiddler>
+</$set>
+</$set>
+
+<$set name="gsd_type" value="realm">
+<$gsdtiddler skeleton="$:/plugins/gsd5/core/ui/skeletons/RealmSkeleton" edit="no">{{$:/plugins/gsd5/core/images/globe}} New Realm</$gsdtiddler>
+</$set>
+
+<$list filter="[all[shadows+tiddlers]tag[$:/tags/GSD5Collect]!has[draft.of]]">
+
+  {{currentTiddler}}
+  
+</$list>

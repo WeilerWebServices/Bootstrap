@@ -1,0 +1,417 @@
+#+TITLE:     Yes, you can get Emacs preset to be more productive!
+#+AUTHOR:    Fabrice Niessen
+#+EMAIL:     (concat "fniessen" at-sign "pirilampo.org")
+#+DESCRIPTION: Emacs configuration file
+#+KEYWORDS:  emacs, configuration, init file
+#+LANGUAGE:  en
+
+#+PROPERTY:  header-args :eval no
+
+#+html: <a href="http://opensource.org/licenses/GPL-3.0">
+#+html:   <img src="http://img.shields.io/:license-gpl-blue.svg" alt=":license-gpl-blue.svg" />
+#+html: </a>
+#+html:
+#+html: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=VCVAS6KPDQ4JC&lc=BE&item_number=emacs%2dleuven&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted">
+#+html:   <img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="btn_donate_LG.gif" />
+#+html: </a>
+
+Looking for an Emacs *configuration file* with many packages already enabled and
+a more *pleasant set of defaults*?  Here's the place to find one!  That will save
+you hours (and hours) of configuration...
+
+The "Emacs Leuven" configuration file is packaged as an Emacs Lisp library, and
+ready to be used by you.
+
+And it is optimized to keep the *Emacs startup time* fast (around *2 seconds*)!
+
+#+begin_note
+Emacs Leuven should not shadow any default Emacs key binding.  It just adds its
+own, for productivity reasons, but keeps everything from the Emacs manual.
+#+end_note
+
+* Download
+
+Get the full Git repository at https://github.com/fniessen/emacs-leuven
+using the following command:
+
+#+begin_src shell
+git clone git://github.com/fniessen/emacs-leuven.git
+#+end_src
+
+* Installation
+
+Using the Emacs Leuven library is very easy: you just need to...
+
+- Download and install [[https://github.com/fniessen/emacs-leuven][emacs-leuven]].
+
+  #+begin_src emacs-lisp
+  ;; Make sure `emacs-leuven.el' is in your `load-path'.
+  (add-to-list 'load-path "/path/to/emacs-leuven")
+
+  ;; Require it as normal.
+  (require 'emacs-leuven)
+
+  ;; Place your settings here, which can override the settings of Emacs-Leuven.
+  #+end_src
+
+- Restart Emacs.
+
+* Some better defaults
+
+- Unnecessary spaces at the end of the lines are indicated by yellow blocks.
+
+* Packages
+
+#+begin_note
+To install all the extra packages used hereunder, without being questioned, add
+the following line before requiring Emacs-Leuven.
+
+    ;; Install all extra Emacs packages without asking for confirmation.
+    (setq leuven-install-all-missing-elpa-packages t)
+#+end_note
+
+| Subject                              | Package                | Description |
+|--------------------------------------+------------------------+-------------|
+| Basic editing commands               | undo-tree              |             |
+| Help                                 | info+                  |             |
+| The mark and the region              | goto-chg               |             |
+|                                      | expand-region          |             |
+|                                      | multiple-cursors       |             |
+|                                      | ace-jump-mode          |             |
+|                                      | ace-link               |             |
+| Controlling the display              | pager                  |             |
+|                                      | fancy-narrow           |             |
+|                                      | highlight-symbol       |             |
+|                                      | color-identifiers-mode |             |
+|                                      | diff-hl                |             |
+|                                      | ws-butler              |             |
+|                                      | powerline              |             |
+|                                      | interaction-log        |             |
+| Searching and replacement            | fuzzy                  |             |
+|                                      | anzu                   |             |
+| Commands for fixing typos            | dictionary             |             |
+| Files Handling                       | helm                   |             |
+|                                      | helm-swoop             |             |
+| Major and minor modes                | csv-mode               |             |
+|                                      | helm-descbinds         |             |
+| Indentation                          | indent-guide           |             |
+| Commands for human languages         | key-chord              |             |
+|                                      | boxquote               |             |
+| SGML and HTML modes                  | tidy                   |             |
+| Editing Programs                     | imenu-anywhere         |             |
+|                                      | hideshowvis            |             |
+|                                      | flycheck               |             |
+| Maintaining programs                 | litable                |             |
+|                                      | git-timemachine        |             |
+|                                      | git-messenger          |             |
+| Abbrevs                              | yasnippet              |             |
+|                                      | auto-complete          |             |
+|                                      | company                |             |
+|                                      | company-quickhelp      |             |
+| Gnus                                 | bbdb                   |             |
+| Document viewing                     | pdf-tools              |             |
+| Running shell commands from Emacs    | multi-term             |             |
+|                                      | cygwin-mount           |             |
+| Hyperlinking and navigation features | google-this            |             |
+|                                      | google-translate       |             |
+| Customization                        | guide-key              |             |
+|--------------------------------------+------------------------+-------------|
+|                                      | ace-window             |             |
+|                                      | auctex                 |             |
+|                                      | bookmark+              |             |
+|                                      | circe                  |             |
+|                                      | diminish               |             |
+|                                      | dired+                 |             |
+|                                      | dired-single           |             |
+|                                      | ess                    |             |
+|                                      | fill-column-indicator  |             |
+|                                      | flycheck               |             |
+|                                      | flycheck-ledger        |             |
+|                                      | git-commit-mode        |             |
+|                                      | graphviz-dot-mode      |             |
+|                                      | htmlize                |             |
+|                                      | idle-require           |             |
+|                                      | ledger-mode            |             |
+|                                      | leuven-theme           |             |
+|                                      | rainbow-mode           |             |
+|                                      | unbound                |             |
+
+To list packages which should NOT be installed by Emacs Leuven (neither proposed
+for installation), add something like this into your configuration file:
+
+#+begin_src emacs-lisp
+(setq leuven-excluded-packages
+      '(useless-package
+        other-annoying-package))
+#+end_src
+
+* Keyboard shortcuts
+
+Save time and boost your productivity with Emacs Leuven keyboard shortcuts.
+
+Key binding conventions:
+http://www.gnu.org/software/emacs/manual/html_node/elisp/Key-Binding-Conventions.html
+
+# https://scotch.io/bar-talk/sublime-text-keyboard-shortcuts
+# http://sweetme.at/2013/08/08/sublime-text-keyboard-shortcuts/
+# http://www.1729.us/xcode/Xcode%20Shortcuts.pdf
+
+** General
+
+Global key bindings.
+
+| Shortcut | What it runs                             |
+|----------+------------------------------------------|
+| <f2>     | save-buffer                              |
+| <S-f2>   | org-save-buffer-and-do-related           |
+| <C-f2>   | (for interaction-log mode)               |
+| <f3>     | find-file (or helm-for-files)            |
+| <f4>     | helm-semantic-or-imenu                   |
+| <M-f4>   | save-buffers-kill-terminal               |
+| <f7>     | leuven-babel-translate                   |
+| <f8>     | call-last-kbd-macro                      |
+| <S-f8>   | leuven-toggle-kbd-macro-recording-on/off |
+| <C-f8>   | name-last-kbd-macro                      |
+| <C-f9>   | leuven-vc-jump                           |
+| <C-f11>  | bbdb                                     |
+| <f12>    | bury-buffer                              |
+| <S-f12>  | leuven-kill-this-buffer-without-query    |
+| <C-f12>  | leuven-revert-buffer-without-query       |
+
+** Help
+
+| Shortcut | What it runs       |
+|----------+--------------------|
+| <f1>     | info               |
+| <S-f1>   | man-follow         |
+| <C-f1>   | info-lookup-symbol |
+
+** Edit
+
+| Shortcut | What it runs |
+|----------+--------------|
+| <f11>    | undo         |
+| C-S-z    | redo         |
+| <S-f11>  | redo         |
+
+** Windows
+
+| Shortcut | What it runs               |
+|----------+----------------------------|
+| <f5>     | delete-other-windows       |
+| <f6>     | other-window               |
+| <C-f6>   | balance-windows            |
+| C-=      | compare-windows            |
+| C-c ~    | leuven-swap-windows        |
+| C-c \vert    | leuven-toggle-window-split |
+
+** Text
+
+| Shortcut | What it runs    |
+|----------+-----------------|
+| <next>   | pager-page-down |
+| <prior>  | pager-page-up   |
+
+** Lines
+
+| Shortcut   | What it runs          |
+|------------+-----------------------|
+| <return>   | newline-and-indent    |
+| C-c ^      | sort-lines            |
+| M-G        | what-line             |
+| <C-S-down> | leuven-move-line-down |
+| <C-S-up>   | leuven-move-line-up   |
+
+** Code folding
+
+| Shortcut | What it runs |
+|----------+--------------|
+
+** Search / Find / Replace
+
+| Shortcut | What it runs          |
+|----------+-----------------------|
+| C-c o    | helm-occur            |
+| C-o      | leuven--isearch-occur |
+| C-o      | occur                 |
+
+** Spelling
+
+| Shortcut | What it runs                      |
+|----------+-----------------------------------|
+| C-$      | flyspell-buffer                   |
+| C-M-$    | leuven-flyspell-toggle-dictionary |
+
+** Build
+
+| Shortcut | What it runs   |
+|----------+----------------|
+| <f9>     | recompile      |
+| <S-f9>   | make-clean     |
+| <f10>    | next-error     |
+| <S-f10>  | previous-error |
+| <C-f10>  | first-error    |
+
+** Bookmarks
+
+| Shortcut | What it runs                               |
+|----------+--------------------------------------------|
+| <C-f2>   | bmkp-toggle-autonamed-bookmark-set/delete  |
+| <S-f2>   | bmkp-next-bookmark-this-file/buffer-repeat |
+| <C-S-f2> | bmkp-delete-all-autonamed-for-this-buffer) |
+|----------+--------------------------------------------|
+| C-x r b  | helm-bookmark-ext                          |
+| C-x r l  | helm-bookmarks                             |
+
+** Org mode
+
+| Shortcut    | What it runs                                 |
+|-------------+----------------------------------------------|
+| <S-f2>      | org-save-buffer-and-do-related               |
+| <C-f3>      | leuven-org-todo-list-current-dir             |
+| <f4>        | helm-org-headlines                           |
+| <M-f6>      | visible-mode                                 |
+| C-M-]       | org-cycle-global ;; <S-tab>                  |
+| M-]         | org-cycle-local                              |
+| C-c l       | org-store-link                               |
+| C-c c       | org-capture                                  |
+| C-c b       | org-switchb                                  |
+| C-c a       | org-agenda                                   |
+| C-c L       | org-insert-link-global                       |
+| C-c o       | org-open-at-point-global                     |
+| C-c C-b     | org-switch-to-agenda                         |
+| \C-\M-n     | outline-next-visible-heading                 |
+| \C-\M-p     | outline-previous-visible-heading             |
+| \C-\M-u     | outline-up-heading                           |
+| C-c C-x f   | org-footnote-action                          |
+| C-c C-x C-i | org-clock-in                                 |
+| C-c C-x C-j | org-clock-goto                               |
+| C-c C-x C-o | org-clock-out                                |
+| C-c C-x C-q | leuven-org-clock-in-interrupted-task         |
+| (           | leuven-org-agenda-toggle-tasks-details       |
+| C-c C-e     | org-export-dispatch                          |
+| M-P         | htmlize-buffer                               |
+| C-c C-e h o | htmlize-view-buffer                          |
+| M-;         | leuven-org-comment-dwim                      |
+| C-M-\\      | leuven-org-indent-region                     |
+| C-c C-v C-d | org-babel-demarcate-block                    |
+| C-c m       | org-mime-subtree                             |
+| C-c m       | leuven-mail-subtree                          |
+| N           | leuven-org-agenda-new                        |
+| Z           | leuven-org-agenda-mark-done-and-add-followup |
+
+** Dired
+
+| Shortcut  | What it runs                    |
+|-----------+---------------------------------|
+| <return>  | dired-single-buffer             |
+| <mouse-1> | dired-single-buffer-mouse       |
+| ^         | (anonymous function)            |
+| e         | browse-url-of-dired-file        |
+| E         | w32-dired-open-files-externally |
+| C-c 1     | find-name-dired                 |
+| C-c 2     | find-grep-dired                 |
+| C-c 3     | rgrep                           |
+
+** Other shortcuts
+
+| Shortcut | What it runs                                   |
+|----------+------------------------------------------------|
+| C-c SPC  | ace-jump                                       |
+| C-)      | match-paren                                    |
+| x        | leuven-vc-dir-hide-up-to-date-and-unregistered |
+| E        | vc-ediff                                       |
+| =        | leuven-vc-diff                                 |
+| M-?      | etags-select-find-tag-at-point                 |
+| C-c e    | ecb-minor-mode                                 |
+| M-/      | hippie-expand                                  |
+| <tab>    | ac-expand                                      |
+
+** Other shortcuts
+
+I still have to sort them out, by mode (when applicable).
+
+| Shortcut      | What it runs                              |
+|---------------+-------------------------------------------|
+| <             | scroll-calendar-right                     |
+| >             | scroll-calendar-left                      |
+|---------------+-------------------------------------------|
+| <C-down>      | comint-next-matching-input-from-input     |
+| <C-up>        | comint-previous-matching-input-from-input |
+| <down>        | comint-next-input                         |
+| <up>          | comint-previous-input                     |
+|---------------+-------------------------------------------|
+| <C-backspace> | backward-kill-word                        |
+| <left>        | speedbar-contract-line                    |
+| <right>       | speedbar-expand-line                      |
+| <S-return>    | leuven-ess-eval                           |
+| M--           | ess-smart-underscore                      |
+| C-*           | leuven-hlt-highlight-current-word         |
+| C-c !         | shell                                     |
+| C-c .         | leuven-insert-current-date                |
+| C-c C-c       | tidy-buffer                               |
+| C-c C-x nil   |                                           |
+| C-c d l       | dictionary-lookup-definition              |
+| C-c d m       | dictionary-match-words                    |
+| C-c d s       | dictionary-search                         |
+| C-c g g       | leuven-google-search                      |
+| C-c g r       | leuven-google-search-region               |
+| C-c g s       | google                                    |
+| C-c g w       | leuven-google-search-word-at-point        |
+| C-c n         |                                           |
+| C-c q         | boxquote-region                           |
+| C-c s         | yas-insert-snippet                        |
+| C-c t         | toggle-truncate-lines                     |
+| C-c T         | multi-term                                |
+| C-c z         | toggle-full-screen                        |
+| C-h A         | apropos-variable                          |
+| C-h E         | elisp-index-search                        |
+| C-S-n         | hlt-next-highlight                        |
+| C-S-p         | hlt-previous-highlight                    |
+| C-x b         | helm-buffers-list                         |
+| C-x C-b       | electric-buffer-list                      |
+| C-x C-b       | ibuffer                                   |
+| C-x p         | proced                                    |
+| M-o           |                                           |
+| M-p           | ps-print-buffer-with-faces                |
+| M-x           | helm-M-x                                  |
+
+* Contributing
+
+** Issues
+
+Report issues and suggest features and improvements on the [[https://github.com/fniessen/emacs-leuven/issues/new][GitHub issue tracker]].
+
+** Patches
+
+I love contributions!  Patches under any form are always welcome!
+
+** Donations
+
+If you like the emacs-leuven project and feel it is making your life better and
+easier, you can show your appreciation and help support future development by
+making a [[https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=VCVAS6KPDQ4JC&lc=BE&item_number=emacs%2dleuven&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted][donation]] through PayPal.  Thank you!
+
+Regardless of the donations, emacs-leuven will always be free both as in
+beer and as in speech.
+
+* License
+
+Copyright (C) 1999-2019 Free Software Foundation, Inc.
+
+Author: Fabrice Niessen \\
+Keywords: emacs configuration file
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program. If not, see http://www.gnu.org/licenses/.
+
+#  LocalWords:  Fabrice Niessen Leuven Dired
